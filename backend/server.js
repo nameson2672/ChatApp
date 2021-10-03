@@ -17,6 +17,11 @@ const app = express();
 //Body parser to parse json
 app.use(bodyParser.json());
 
+// Import routers
+import Route  from './routers/route.js'
+
+app.use('/', Route);
+
 
 const port = process.env.PORT || 5000
 

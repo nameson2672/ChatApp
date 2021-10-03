@@ -4,11 +4,10 @@ const connectDB = async () => {
     try {
     const conn = await mongoose.connect(process.env.MONGODBLINK, {
       useUnifiedTopology: true,
-      useNewUrlParser: true,
-      useCreateIndex: true,
-    }, (e) => {
-         console.log(`MongoDB Connected...`.cyan.underline);
-    });
+      useNewUrlParser: true
+    },
+      console.log(`MongoDB Connected...`.cyan.underline)
+    );
 
    
   } catch (error) {
