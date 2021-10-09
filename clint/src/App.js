@@ -1,13 +1,14 @@
 
 import Login from "./components/Login";
+import AvatarWithLetter from './components/Avtar'
 import { useState } from "react";
 
 function App() {
    const [user, setUser] = useState(null);
   return (
     <div className="container">
-      { !user? <Login setUser={setUser} /> : <h2>Hellow</h2>
-      }</div>
+      {!user ? <Login setUser={setUser} /> : <AvatarWithLetter userName={user.name[0]}/>}
+    </div>
   );
 }
 
