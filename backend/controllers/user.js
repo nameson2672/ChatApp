@@ -1,15 +1,17 @@
-import Jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import generateToken from "../utils/tokenGenerate.js";
 
 // SignUp user
 const createUser = async (req, res, next) => {
   try {
-    const data = req.body.data;
-      const isUserAlradyExist = await User.findOne({ email: data.email });
-      console.log(isUserAlradyExist)
+    const data = req.body;
+    console.log(data)
+    const isUserAlradyExist = await User.findOne({ email: data.email });
+    console.log(!isUserAlradyExist);
     if (!isUserAlradyExist) {
       const newUser = await User.create({ ...data });
+      console.log(newUser);
       if (newUser) {
         res.status(200).json({
           success: true,
@@ -43,4 +45,39 @@ const createUser = async (req, res, next) => {
   }
 };
 
-export { createUser };
+// Sign in route
+
+const getUser = async (req, res, next) => {
+  console.log(req.body)
+  const { email, password } = req.body;
+  console.log(email, password);
+  try {
+    const user = await User.findOne({ email: email });
+    console.log(user);
+
+    if (user && (await user.matchPassword(password))) {
+      res.status(200).json({
+        sucess: true,
+        data: {
+          name: user.name,
+          email: user.email,
+          token: generateToken(user._id),
+        },
+      });
+    } else {
+      res.status(400).json({
+        sucess: false,
+        data: {},
+        error: "email or password didn't match",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      sucess: false,
+      data: {},
+      error: error.message,
+    });
+  }
+};
+
+export { createUser, getUser };

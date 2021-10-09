@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import bodyParser from 'body-parser';
 import colors from "colors";
+import cors from 'cors';
 
 // Get environment varianbles from .env 
 dotenv.config();
@@ -16,6 +17,9 @@ const app = express();
 
 //Body parser to parse json
 app.use(bodyParser.json());
+
+// Cors 
+app.use(cors());
 
 // Import routers
 import Route  from './routers/route.js'

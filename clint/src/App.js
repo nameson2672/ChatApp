@@ -1,10 +1,13 @@
 
+import Login from "./components/Login";
+import { useState } from "react";
 
 function App() {
+   const [user, setUser] = useState(null);
   return (
-    <div >
-     <h1>Hellow</h1>
-    </div>
+    <div className="container">
+      { !user? <Login setUser={setUser} /> : <h2>Hellow</h2>
+      }</div>
   );
 }
 
