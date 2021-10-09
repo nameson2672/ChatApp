@@ -80,4 +80,15 @@ const getUser = async (req, res, next) => {
   }
 };
 
-export { createUser, getUser };
+// Get all user with name and id
+const getUsers = async (req, res) => {
+  const user = await User.find({},"-password");
+  res.status(200).json({
+    sucess: true,
+    data: {
+      user
+    }
+  })
+}
+
+export { createUser, getUser, getUsers };

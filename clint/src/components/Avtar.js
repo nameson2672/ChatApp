@@ -6,7 +6,7 @@ const ColorList = ["#f56a00", "#7265e6", "#ffbf00", "#00a2ae"];
 const GapList = [4, 3, 2, 1];
 
 const AvatarWithLetter = ({ userName }) => {
-  const [user, setUser] = useState(userName);
+  const [user, setUser] = useState(userName[0].toUpperCase());
   const [color, setColor] = useState(ColorList[Math.floor(Math.random() * 4)]);
   const [gap, setGap] = useState(GapList[0]);
 
@@ -17,8 +17,9 @@ const AvatarWithLetter = ({ userName }) => {
           backgroundColor: color,
           verticalAlign: "middle",
         }}
-        size="large"
+        size={40}
         gap={gap}
+        className="avtarText"
       >
         {user}
       </Avatar>

@@ -17,8 +17,9 @@ code {
 
 @import '~antd/dist/antd.css';
 
+
 .container{
-  max-width: 1200px;
+  max-width: 1500px;
   height: 100vh;
   margin: 0 auto;
   display: flex;
@@ -26,4 +27,92 @@ code {
   justify-content: center;
   align-items: center;
   overflow-x: hidden;
+}
+.mainPage{
+  display:grid;
+  width: 100%;
+  height: 100vh;
+  grid-template: "left middle middle middle middle right" 1fr;
+  margin: 10px;
+}
+.left{
+  grid-area: left;
+ text-align: center;
+
+}
+.left p{
+  font-size: 24px;
+  color: rgb(48, 48, 48);
+}
+.right p{
+  font-size: 24px;
+  color: rgb(48, 48, 48);
+}
+.right{
+  grid-area: right;
+   text-align: center;
+
+}
+.middle{
+  grid-area: middle;
+  background-color:rgb(13, 13, 77);
+
+}
+
+.userCard{
+  background-color: rgb(245, 245, 245);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+  box-shadow: 0px 7px 17px -4px rgba(0,0,0,0.37);
+-webkit-box-shadow: 0px 7px 17px -4px rgba(0,0,0,0.37);
+-moz-box-shadow: 0px 7px 17px -4px rgba(0,0,0,0.37);
+}
+.userCard:hover{
+  background-color:rgb(192, 192, 192);
+  box-shadow: 0px 7px 17px -4px rgba(0,0,0,0.37) inset;
+-webkit-box-shadow: 0px 7px 17px -4px rgba(0,0,0,0.37) inset;
+-moz-box-shadow: 0px 7px 17px -4px rgba(0,0,0,0.37) inset;
+}
+
+
+.userCard p{
+  padding-top:10px;
+  font-size: 18px;
+  text-align: center;
+  align-items: center;
+}
+.messageContaioner{
+  position: relative;
+  height: 100%;
+}
+.messageBox{
+  position:absolute;
+  width: 100%;
+  display: flex;
+  z-index: 1;
+  bottom: 0;
+
+}
+.messageInput{
+  width: 100%;
+}
+.messageInput input{
+  border:none;
+  width: 100%;
+  padding: 5px;
+  border-radius: 0;
+
+}
+
+.messageInput input:focus{
+  outline:none;
+  border: 1px solid rgb(89, 100, 247);
+  
+
 }

@@ -1,13 +1,23 @@
 
 import Login from "./components/Login";
-import AvatarWithLetter from './components/Avtar'
-import { useState } from "react";
+import Home from './components/Home'
+
+import { useState, useEffect } from "react";
 
 function App() {
-   const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    if (user === null) {
+      setUser({
+        email: "namesongaudel.ng@gmail.com",
+        name: "Nameson Gaudel",
+      });
+    }
+  }, [])
+  
   return (
     <div className="container">
-      {!user ? <Login setUser={setUser} /> : <AvatarWithLetter userName={user.name[0]}/>}
+      {!user ? <Login setUser={setUser} /> : <Home user={ user}/>}
     </div>
   );
 }
