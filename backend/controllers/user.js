@@ -91,4 +91,15 @@ const getUsers = async (req, res) => {
   })
 }
 
-export { createUser, getUser, getUsers };
+// Get specific user 
+const getReciver = async (req, res) => {
+  console.log(req.params.reciver);
+  const user = await User.findById(req.params.reciver);
+  console.log("helolow");
+  res.status(200).json({
+    sucess: true,
+    data: user,
+  });
+}
+
+export { createUser, getUser, getUsers, getReciver };

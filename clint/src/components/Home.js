@@ -6,6 +6,7 @@ import Messages from "./Messages";
 
 function Home({ user }) {
   const url = "http://localhost:5000";
+  const [reciver, setReciver] = useState(null);
   const [users, setUsers] = useState([]);
   useEffect(async () => {
     const allUser = await axios({
@@ -22,16 +23,26 @@ function Home({ user }) {
       <div className="left">
         <p>Users</p>
         {users.map((e) => (
-          <User name={e.name} key={e._id} />
+          <User
+            name={e.name}
+            userId={e._id}
+            key={e._id}
+            setReciver={setReciver}
+          />
         ))}
       </div>
       <div className="middle">
-        <Messages />
+        <Messages reciver={reciver} user={user}/>
       </div>
       <div className="right">
         <p>Online User</p>
         {users.map((e) => (
-          <User name={e.name} key={e._id} />
+          <User
+            name={e.name}
+            userId={e._id}
+            key={e._id}
+            setReciver={setReciver}
+          />
         ))}
       </div>
     </div>

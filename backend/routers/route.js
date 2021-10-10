@@ -2,7 +2,12 @@ import  express  from 'express';
 const router = express.Router();
 
 // User controllers
-import { createUser, getUser, getUsers } from "../controllers/user.js";
+import {
+  createUser,
+  getUser,
+  getUsers,
+  getReciver,
+} from "../controllers/user.js";
 
 // Convertation controller
 import {
@@ -15,6 +20,7 @@ import { addMessage, getMessage } from '../controllers/message.js';
 router.route('/create').post(createUser);
 router.route('/login').post(getUser);
 router.route("/getAllUser").get(getUsers);
+router.route("/:reciver").get(getReciver);
 
 // Convwertation routes
 router.route("/convertation").post(newConvertation);

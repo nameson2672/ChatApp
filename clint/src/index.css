@@ -116,3 +116,11 @@ code {
   
 
 }
+
+.flex{
+  display:flex;
+  justify-content:space-between;
+  width: 100%;
+  background-color:rgb(168, 180, 180);
+  padding: 10px 5px;
+}
