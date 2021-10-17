@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input, Button } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
+import Message from "./Message";
 import axios from "axios";
 import AvatarWithLetter from "./Avtar";
 
@@ -12,9 +13,29 @@ function Messages({ reciver, user }) {
   const [reciverData, setReciverData] = useState(null);
   const [convertation, setConvertation] = useState(null);
   const [msgFromDb, setMsgFromDb] = useState(null);
-  const sendMessage = (e) => {
-    setNewMessage("");
+  const scrollRef = useRef();
+
+  const sendMessage =async (e) => {
+    if (newMessage !== "") {
+      // Post to db
+      // console.log(convertation._id, user._id, newMessage);
+      const msg = await axios({
+        method: "post",
+        url: `${url}/messages`,
+        data: {
+          conversationId: convertation._id,
+          sender: user._id,
+          text: newMessage,
+        },
+      });
+      console.log(msg);
+      setNewMessage("");
+    } 
+    
   };
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [newMessage]);
 
   useEffect(async () => {
     if (reciver !== null) {
@@ -36,7 +57,7 @@ function Messages({ reciver, user }) {
       setConvertation(get.data);
     }
   }, [reciverData]);
-  useEffect(async() => {
+  useEffect(async () => {
     if (convertation !== null) {
       const get = await axios({
         method: "get",
@@ -60,7 +81,15 @@ function Messages({ reciver, user }) {
           )}
         </div>
       </div>
-
+      <div className="msgContainer">
+        <div className="chatBoxTop">
+          {msgFromDb?.map((m) => (
+            <div ref={scrollRef}>
+              <Message message={m} own={m.sender === user._id} senderName={reciverData.name} userName={user.name}/>
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="messageBox">
         <div className="messageInput">
           <input

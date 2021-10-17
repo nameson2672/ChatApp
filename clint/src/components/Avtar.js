@@ -7,7 +7,7 @@ const GapList = [4, 3, 2, 1];
 
 const AvatarWithLetter = ({ userName }) => {
   const [user, setUser] = useState(userName[0].toUpperCase());
-  const [color, setColor] = useState(ColorList[Math.floor(Math.random() * 4)]);
+  const [color, setColor] = useState(ColorList[1]);
   const [gap, setGap] = useState(GapList[0]);
 
   return (
