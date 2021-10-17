@@ -6,7 +6,7 @@ import generateToken from "../utils/tokenGenerate.js";
 const createUser = async (req, res, next) => {
   try {
     const data = req.body;
-    console.log(data)
+    console.log(data);
     const isUserAlradyExist = await User.findOne({ email: data.email });
     console.log(!isUserAlradyExist);
     if (!isUserAlradyExist) {
@@ -16,7 +16,7 @@ const createUser = async (req, res, next) => {
         res.status(200).json({
           success: true,
           data: {
-            id: newUser.id,
+            _id: newUser._id,
             name: newUser.name,
             email: newUser.email,
             token: generateToken(newUser._id),
@@ -48,7 +48,7 @@ const createUser = async (req, res, next) => {
 // Sign in route
 
 const getUser = async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
   const { email, password } = req.body;
   console.log(email, password);
   try {
@@ -59,6 +59,7 @@ const getUser = async (req, res, next) => {
       res.status(200).json({
         sucess: true,
         data: {
+          _id: user._id,
           name: user.name,
           email: user.email,
           token: generateToken(user._id),
@@ -82,16 +83,16 @@ const getUser = async (req, res, next) => {
 
 // Get all user with name and id
 const getUsers = async (req, res) => {
-  const user = await User.find({},"-password");
+  const user = await User.find({}, "-password");
   res.status(200).json({
     sucess: true,
     data: {
-      user
-    }
-  })
-}
+      user,
+    },
+  });
+};
 
-// Get specific user 
+// Get specific user
 const getReciver = async (req, res) => {
   console.log(req.params.reciver);
   const user = await User.findById(req.params.reciver);
@@ -100,6 +101,6 @@ const getReciver = async (req, res) => {
     sucess: true,
     data: user,
   });
-}
+};
 
 export { createUser, getUser, getUsers, getReciver };

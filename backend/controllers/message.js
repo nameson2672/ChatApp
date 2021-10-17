@@ -2,7 +2,8 @@ import Message from "../models/Messages.js";
 
 // Add new message 
 const addMessage = async (req, res) => {
-    const newMessage = new Message(req.body);
+  const newMessage = new Message(req.body);
+  console.log(req)
 
     try {
       const savedMessage = await newMessage.save();

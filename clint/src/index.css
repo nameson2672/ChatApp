@@ -8,6 +8,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color:rgb(233, 233, 233);
   overflow-x: hidden;
+  height: 100vh;
 }
 
 code {
@@ -129,7 +130,10 @@ code {
 .message {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  
 }
 
 .messageTop{
@@ -137,8 +141,8 @@ code {
 }
 
 .messageImg {
-  width: 32px;
-  height: 32px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;
@@ -146,15 +150,15 @@ code {
 
 .messageText{
     padding: 10px;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: #1877f2;
     color: white;
     max-width: 300px;
 }
 
 .messageBottom{
-    font-size: 12px;
-    margin-top: 10px;
+  color: white;
+  font-size: 12px;
 }
 
 .message.own{
@@ -170,4 +174,10 @@ code {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+}
+.msgContainer{
+  height: 89vh;
+  overflow: scroll;
+  overflow-x: hidden;
+  padding-bottom: 25px;
 }

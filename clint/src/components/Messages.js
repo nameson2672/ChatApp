@@ -4,6 +4,7 @@ import { CaretRightOutlined } from "@ant-design/icons";
 import Message from "./Message";
 import axios from "axios";
 import AvatarWithLetter from "./Avtar";
+import { io } from "socket.io-client";
 
 const { TextArea } = Input;
 
@@ -13,26 +14,30 @@ function Messages({ reciver, user }) {
   const [reciverData, setReciverData] = useState(null);
   const [convertation, setConvertation] = useState(null);
   const [msgFromDb, setMsgFromDb] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const socket = useRef();
   const scrollRef = useRef();
 
-  const sendMessage =async (e) => {
-    if (newMessage !== "") {
-      // Post to db
-      // console.log(convertation._id, user._id, newMessage);
-      const msg = await axios({
-        method: "post",
-        url: `${url}/messages`,
-        data: {
-          conversationId: convertation._id,
-          sender: user._id,
-          text: newMessage,
-        },
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:5000");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
       });
-      console.log(msg);
-      setNewMessage("");
-    } 
-    
-  };
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.current.emit("addUser", user.id);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [user]);
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [newMessage]);
@@ -65,7 +70,32 @@ function Messages({ reciver, user }) {
       });
       setMsgFromDb(get.data);
     }
-  }, [convertation]);
+  }, [convertation, reciverData]);
+
+  const sendMessage = async (e) => {
+    if (newMessage !== "") {
+      // Post to db
+      // console.log(convertation._id, user._id, newMessage);
+      const msg = await axios({
+        method: "post",
+        url: `${url}/messages`,
+        data: {
+          conversationId: convertation._id,
+          sender: user._id,
+          text: newMessage,
+        },
+      });
+      console.log(msg);
+    
+
+      socket.current.emit("sendMessage", {
+        senderId: user._id,
+        receiverId: reciverData._id,
+        text: newMessage,
+      });
+        setNewMessage("");
+    }
+  };
 
   return (
     <div className="messageContaioner">
@@ -85,7 +115,12 @@ function Messages({ reciver, user }) {
         <div className="chatBoxTop">
           {msgFromDb?.map((m) => (
             <div ref={scrollRef}>
-              <Message message={m} own={m.sender === user._id} senderName={reciverData.name} userName={user.name}/>
+              <Message
+                message={m}
+                own={m.sender === user._id}
+                senderName={reciverData.name}
+                userName={user.name}
+              />
             </div>
           ))}
         </div>
