@@ -43,8 +43,8 @@ let users = [];
 
 // Add user with user and socket id when they are connected
 const addUser = (userId, socketId) => {
-  !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
+  !users.some((user) => user.userId === userId._id) &&
+    users.push({ userId:userId._id, name:userId.name, socketId });
 };
 
 // Remove user from live status on disconnect

@@ -8,17 +8,31 @@ import { io } from "socket.io-client";
 
 const { TextArea } = Input;
 
-function Messages({ reciver, user }) {
+function Messages({ reciver, user, setOnlineUsers }) {
   const url = "http://localhost:5000";
   const [newMessage, setNewMessage] = useState(String);
   const [reciverData, setReciverData] = useState(null);
   const [convertation, setConvertation] = useState(null);
   const [msgFromDb, setMsgFromDb] = useState(null);
   const [arrivalMessage, setArrivalMessage] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+
   const socket = useRef();
   const scrollRef = useRef();
 
+  useEffect(() => {
+    if (arrivalMessage !== null) {
+      console.log(arrivalMessage)
+      if (msgFromDb !== null) {
+        setMsgFromDb([...msgFromDb, { arrivalMessage }]);
+      } else {
+        setMsgFromDb([{arrivalMessage}]);
+      }
+      
+      
+    }
+    
+
+  }, [arrivalMessage])
 
   useEffect(() => {
     socket.current = io("ws://localhost:5000");
@@ -32,7 +46,7 @@ function Messages({ reciver, user }) {
   }, []);
 
   useEffect(() => {
-    socket.current.emit("addUser", user.id);
+    socket.current.emit("addUser", { _id:user._id, name:user.name  });
     socket.current.on("getUsers", (users) => {
       setOnlineUsers(users);
     });
@@ -48,7 +62,7 @@ function Messages({ reciver, user }) {
         method: "get",
         url: `${url}/${reciver}`,
       });
-      console.log("reciver");
+      console.log(get.data.data);
       setReciverData(get.data.data);
     }
   }, [reciver]);
@@ -59,7 +73,21 @@ function Messages({ reciver, user }) {
         method: "get",
         url: `${url}/convertation/${user._id}/${reciver}`,
       });
-      setConvertation(get.data);
+      console.log(get);
+      if (get.data !== null) {
+        setConvertation(get.data);
+      } else {
+        const newConvertation = await axios({
+          method: "post",
+          url: `${url}/convertation`,
+          body: {
+            senderId: user._id,
+            receiverId: reciver,
+          },
+        });
+        console.log(newConvertation);
+        setConvertation(newConvertation.data);
+      }
     }
   }, [reciverData]);
   useEffect(async () => {
@@ -70,7 +98,7 @@ function Messages({ reciver, user }) {
       });
       setMsgFromDb(get.data);
     }
-  }, [convertation, reciverData]);
+  }, [convertation]);
 
   const sendMessage = async (e) => {
     if (newMessage !== "") {
@@ -86,14 +114,13 @@ function Messages({ reciver, user }) {
         },
       });
       console.log(msg);
-    
 
       socket.current.emit("sendMessage", {
         senderId: user._id,
         receiverId: reciverData._id,
         text: newMessage,
       });
-        setNewMessage("");
+      setNewMessage("");
     }
   };
 

@@ -8,6 +8,7 @@ function Home({ user }) {
   const url = "http://localhost:5000";
   const [reciver, setReciver] = useState(null);
   const [users, setUsers] = useState([]);
+    const [onlineUsers, setOnlineUsers] = useState([]);
   useEffect(async () => {
     const allUser = await axios({
       method: "get",
@@ -24,6 +25,8 @@ function Home({ user }) {
         <p>Users</p>
         {users.map((e) => (
           <User
+            me={user._id}
+            view={true}
             name={e.name}
             userId={e._id}
             key={e._id}
@@ -32,15 +35,21 @@ function Home({ user }) {
         ))}
       </div>
       <div className="middle">
-        <Messages reciver={reciver} user={user}/>
+        <Messages
+          reciver={reciver}
+          user={user}
+          setOnlineUsers={setOnlineUsers}
+        />
       </div>
       <div className="right">
         <p>Online User</p>
-        {users.map((e) => (
+        {onlineUsers.map((e) => (
           <User
+            me={user._id}
             name={e.name}
-            userId={e._id}
-            key={e._id}
+            view={false}
+            userId={e.userId}
+            key={e.userId}
             setReciver={setReciver}
           />
         ))}
