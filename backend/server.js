@@ -44,7 +44,7 @@ let users = [];
 // Add user with user and socket id when they are connected
 const addUser = (userId, socketId) => {
   !users.some((user) => user.userId === userId._id) &&
-    users.push({ userId:userId._id, name:userId.name, socketId });
+    users.push({ userId: userId._id, name: userId.name, socketId });
 };
 
 // Remove user from live status on disconnect
@@ -65,14 +65,15 @@ io.on("connection", (socket) => {
   //take userId and socketId from user
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
-    console.log(users)
+    console.log(users);
     io.emit("getUsers", users);
   });
 
   //send and get message
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    io.to(user.socketId).emit("getMessage", {
+
+    io.to(user?.socketId).emit("getMessage", {
       senderId,
       text,
     });

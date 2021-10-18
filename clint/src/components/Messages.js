@@ -23,9 +23,9 @@ function Messages({ reciver, user, setOnlineUsers }) {
     if (arrivalMessage !== null) {
       console.log(arrivalMessage)
       if (msgFromDb !== null) {
-        setMsgFromDb([...msgFromDb, { arrivalMessage }]);
+        setMsgFromDb([...msgFromDb,  arrivalMessage ]);
       } else {
-        setMsgFromDb([{arrivalMessage}]);
+        setMsgFromDb([arrivalMessage]);
       }
       
       
@@ -77,10 +77,11 @@ function Messages({ reciver, user, setOnlineUsers }) {
       if (get.data !== null) {
         setConvertation(get.data);
       } else {
+        console.log(user._id, reciver)
         const newConvertation = await axios({
           method: "post",
           url: `${url}/convertation`,
-          body: {
+          data: {
             senderId: user._id,
             receiverId: reciver,
           },
@@ -120,6 +121,14 @@ function Messages({ reciver, user, setOnlineUsers }) {
         receiverId: reciverData._id,
         text: newMessage,
       });
+      setMsgFromDb([
+        ...msgFromDb,
+        {
+          sender: user._id,
+          text: newMessage,
+          createdAt: Date.now(),
+        }
+      ]);
       setNewMessage("");
     }
   };

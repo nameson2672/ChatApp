@@ -2,6 +2,7 @@ import Conversation from "../models/Convertation.js";
 
 // Set a new convertation between two user
 const newConvertation = async (req, res) => {
+  console.log(req)
   const newConversation = new Conversation({
     members: [req.body.senderId, req.body.receiverId],
   });
